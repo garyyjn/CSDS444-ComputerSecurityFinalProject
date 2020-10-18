@@ -2,4 +2,4 @@
 
 ## TODO
 Gary Yao
-- [ ] Mercury
+- [ ] Create Intermediate Layer
