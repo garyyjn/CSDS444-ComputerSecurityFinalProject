@@ -125,7 +125,7 @@ class xRsa(object):
 		return plaintext2
 
 if __name__ == '__main__':
-    msg = "hello world"
+    msg = input('Message: ')
     #Create an object, change the internal of the object will complete the relevant initialization, especially the private key, public key
     t = xRsa()
     #Encrypt and return the result
