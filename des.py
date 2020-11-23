@@ -428,6 +428,7 @@ class des():
         self.setFile(filename)
         self.process(1)
 
-#To encrypt a file, you should have a txt plain text file(txt) encoding with UTF-8 format. and another txt file with 8 digit key(So it can be convert into 64bit binary key)
-#After the key and the plain text file path are input, the encryption algorithm will generate a filename(txt).des file at the same directory. The decryption process is the same
-# the input is  filename(txt).des with a 8 digit key and the decryption will regenerate filename.txt at the same directory.
+if __name__ == '__main__':
+    desObj = des()
+    desObj.encryption("key.txt","file.txt") # this will generte file(des).txt at the same directory
+    desObj.decryption("key.txt","file(txt).des") #thie will generate file.txt at the same directory
