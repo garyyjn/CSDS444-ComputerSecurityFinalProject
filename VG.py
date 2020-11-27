@@ -17,7 +17,7 @@ class VG:
         length_characters = len(self.characters_26)
         for index in range(0,length_key):
             self.dict_key.update({key[index]:index})
-            print self.dict_key
+            print(self.dict_key)
         for index in range(0,length_characters):
             self.dict_char2int.update({self.characters_26[index]:index})
         for index in range(0,length_characters):
@@ -75,17 +75,19 @@ class VG:
         return  new_string
 
 # Description how to use it
-key = raw_input('key:')
+'''
+key = input('key:')
 input_string = raw_input('input_string:')
 obj = VG()
 obj.create_table(key)
-print 'key'
-print obj.dict_key
-print obj.dict_char2int
-print obj.dict_int2char
-print obj.table
+print('key')
+print(obj.dict_key)
+print(obj.dict_char2int)
+print(obj.dict_int2char)
+print(obj.table)
 
 ciper_text = obj.cipher(input_string,key)
-print ciper_text
+print(ciper_text)
 deciper_text = obj.decipher(ciper_text,key)
-print deciper_text
+print(deciper_text)
+'''
