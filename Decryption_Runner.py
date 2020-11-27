@@ -1,4 +1,5 @@
 #import your algorithms here
+from pip._vendor.distlib.compat import raw_input
 from md5 import MD5_State
 from RSA import xRsa
 from VG import VG
@@ -11,7 +12,7 @@ class Decryption_Runner:
         if(self.algorithm == 'RSA'):
             t = xRsa()
             print("Running RSA Decryption")
-            cipher = int(input("Cipher text: "))
+            cipher = raw_input("Cipher text: ")
             plaintext = t.decrptyMsg(cipher)
             # Print the string content after encryption and decryption
             print("decrypted text:" + plaintext)

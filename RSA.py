@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import random
 import binascii
+from pip._vendor.distlib.compat import raw_input
 class xRsa(object):	
 	n = 0
 	e = 0
@@ -125,7 +126,7 @@ class xRsa(object):
 		return plaintext2
 
 if __name__ == '__main__':
-    msg = input('Message: ')
+    msg = raw_input('Message: ')
     #Create an object, change the internal of the object will complete the relevant initialization, especially the private key, public key
     t = xRsa()
     #Encrypt and return the result

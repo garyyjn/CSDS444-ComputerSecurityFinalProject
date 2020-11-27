@@ -1,4 +1,5 @@
 #import your algorithms here
+from pip._vendor.distlib.compat import raw_input
 from md5 import MD5_State
 from RSA import xRsa
 from VG import VG
@@ -10,7 +11,7 @@ class Encryption_Runner:
     def run(self):
         if(self.algorithm == 'RSA'):
             print("Running RSA Encrption")
-            msg = input('Message: ')
+            msg = raw_input('Message: ')
             t = xRsa()
             print("plain text:" + msg)
             cipher = t.encrptyMsg(msg)
