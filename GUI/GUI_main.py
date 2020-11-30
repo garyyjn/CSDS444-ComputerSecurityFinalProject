@@ -8,6 +8,7 @@ from kivy.uix.popup import Popup
 from VG import VG
 from des import des
 from RSA import xRsa
+from md5 import MD5_State
 import os
 Builder.load_string("""
 <MenuScreen>:
@@ -30,7 +31,7 @@ Builder.load_string("""
             on_press: root.manager.current = 'en_VG'
         Button:
             text: 'MD5'
-            on_press: root.onClick('MD5')
+            on_press: root.manager.current = 'en_MD5'
         Button:
             text: 'DES'
             on_press: root.manager.current = 'en_DES'
@@ -153,9 +154,9 @@ Builder.load_string("""
             on_text: root.calculate()
             id: cipher
         TextInput:
-            id: public key
+            id: d
         TextInput:
-            id: private key
+            id: n
         TextInput:
             id: plane
         Button:
@@ -171,8 +172,6 @@ Builder.load_string("""
         TextInput:
             on_text: root.calculate()
             id: cipher
-        TextInput:
-            id: key
         TextInput:
             id: plane
         Button:
@@ -197,6 +196,24 @@ Builder.load_string("""
             Button:
                 text: "Load"
                 on_release: root.load(filechooser.path, filechooser.selection)
+
+<MD5EncryptScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        Button:
+            text: 'load from file'
+            on_press: root.show_load()
+        TextInput:
+            on_text: root.calculate()
+            id: plane
+        TextInput:
+            on_text: root.calculate()
+            id: key
+        TextInput:
+            id: cipher
+        Button:
+            text: 'Save into file'
+            on_press: root.show_save()
 
 <SaveDialog>:
     text_input: text_input
@@ -390,6 +407,7 @@ class DESEncryptScreen(Screen):
 '''
 md5 encryption
 '''
+
 '''
 RSA encryption
 '''
@@ -397,8 +415,8 @@ class RSAEncryptScreen(Screen):
     def calculate(self):
         algo = xRsa()
         plane_text = self.ids.plane.text
-        cipher, private, public = algo.encrptyMsg(plane_text)
-        self.ids.key.text = "public key: " + str(public) + "\nprivate key:" + str(private)
+        cipher, d, n = algo.encrptyMsg(plane_text)
+        self.ids.key.text = "d: " + str(d) + "\nn:" + str(n)
         self.ids.cipher.text = str(cipher)
 
     loadfile = ObjectProperty(None)
@@ -437,12 +455,12 @@ class RSADecryptScreen(Screen):
         algo = xRsa()
         try:
             cipher = int(self.ids.cipher.text)
-            private_key = int(self.ids.private_key.text)
-            public_key = int(self.ids.public_key.text)
+            d = int(self.ids.d.text)
+            n = int(self.ids.n.text)
         except:
             self.ids.plane.text = "numeric input only"
         try:
-            plane = algo.decrptyMsg(cipher,private_key, public_key)
+            plane = algo.decrptyMsg(cipher, d, n)
             self.ids.plane.text = plane
         except:
             self.ids.plane.text = "Invalid key/cipher"
@@ -478,6 +496,49 @@ class RSADecryptScreen(Screen):
 
     pass
 '''
+md5
+'''
+class MD5EncryptScreen(Screen):
+    def calculate(self):
+        key = self.ids.plane.text
+        obj = MD5_State()
+        buff = [''] * 16
+        ciper = obj.md5_digest(key, len(key), buff)
+        self.ids.cipher.text = ""
+        print("deciper_text =")
+        for i in range(16):
+            self.ids.cipher.text += "%x" % ((ord(buff[i]) & 0xF0) >> 4) + '' + "%x" % (ord(buff[i]) & 0x0F) + ' '
+
+    loadfile = ObjectProperty(None)
+    savefile = ObjectProperty(None)
+    text_input = ObjectProperty(None)
+
+    def dismiss_popup(self):
+        self._popup.dismiss()
+
+    def show_load(self):
+        content = LoadDialog(load=self.load, cancel=self.dismiss_popup)
+        self._popup = Popup(title="Load file", content=content,
+                            size_hint=(0.9, 0.9))
+        self._popup.open()
+
+    def show_save(self):
+        content = SaveDialog(save=self.save, cancel=self.dismiss_popup)
+        self._popup = Popup(title="Save file", content=content,
+                            size_hint=(0.9, 0.9))
+        self._popup.open()
+
+    def load(self, path, filename):
+        with open(os.path.join(path, filename[0])) as stream:
+            self.ids.plane.text = stream.read()
+        self.dismiss_popup()
+
+    def save(self, path, filename):
+        with open(os.path.join(path, filename), 'w') as stream:
+            stream.write(self.ids.cipher.text)
+        self.dismiss_popup()
+    pass
+'''
 Input/Output
 '''
 class LoadDialog(FloatLayout):
@@ -500,6 +561,7 @@ sm.add_widget(VGDecryptScreen(name='de_VG'))
 sm.add_widget(DESEncryptScreen(name='en_DES'))
 sm.add_widget(RSAEncryptScreen(name='en_RSA'))
 sm.add_widget(RSADecryptScreen(name='de_RSA'))
+sm.add_widget(MD5EncryptScreen(name='en_MD5'))
 
 
 class TestApp(App):
