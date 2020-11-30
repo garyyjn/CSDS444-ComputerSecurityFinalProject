@@ -109,21 +109,21 @@ class xRsa(object):
 	    #return str.decode('hex')
 	    return str(binascii.unhexlify(hex(long_num)[2:]))
 
-	def encrptyMsg(self, msg):
-		
-		mess_num = self.ToLong(msg)
-		tmpxx = "Ready to encrypt,public key:"+str(self.e)+"^"+str(self.n)
-		print (tmpxx)
-		cipher = self.calc_value_mode(mess_num, self.e, self.n)
+       def encrptyMsg(self, msg):
 
-		return cipher
+       	    mess_num = self.ToLong(msg)
+            tmpxx = "Ready to encrypt,public key:" + str(self.e) + "^" + str(self.n)
+            print (tmpxx)
+            cipher = self.calc_value_mode(mess_num, self.e, self.n)
 
-	def decrptyMsg(self, msg):
-		tmpxx = "Ready to decrpty,private key:"+str(self.d)+"^"+str(self.n)
-		print (tmpxx)
-		plaintext1 = self.calc_value_mode(msg, self.d, self.n)
-		plaintext2 = self.ToStringEx(plaintext1)
-		return plaintext2
+            return cipher, self.d,self.n
+
+      def decrptyMsg(self,msg,d,n):
+            tmpxx = "Ready to decrpty,private key:" + str(self.d) + "^" + str(self.n)
+            print (tmpxx)
+            plaintext1 = self.calc_value_mode(msg, d, n)
+            plaintext2 = self.ToStringEx(plaintext1)
+            return plaintext2
 
 if __name__ == '__main__':
     msg = raw_input('Message: ')
