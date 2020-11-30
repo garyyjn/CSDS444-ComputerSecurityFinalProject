@@ -12,8 +12,8 @@ class Decryption_Runner:
         if(self.algorithm == 'RSA'):
             t = xRsa()
             print("Running RSA Decryption")
-            cipher = raw_input("Cipher text: ")
-            plaintext = t.decrptyMsg(cipher)
+            #cipher = raw_input("Cipher text: ")
+            plaintext = t.decrptyMsg(14638872678012233450065572822)
             # Print the string content after encryption and decryption
             print("decrypted text:" + plaintext)
         elif(self.algorithm == 'MD5'):
@@ -27,6 +27,7 @@ class Decryption_Runner:
             obj = VG()
             cipher_text = input("Cipher_text: ")
             key = input("Key: ")
+            obj.create_table(key)
             deciper_text = obj.decipher(cipher_text, key)
             print(deciper_text)
         else:

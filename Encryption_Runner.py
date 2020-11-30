@@ -33,8 +33,8 @@ class Encryption_Runner:
             desObj.encryption("key.txt", "file.txt")  # this will generte file(des).txt at the same directory
         elif(self.algorithm == 'VG'):
             print("Running VG Encrption")
-            key = input('key:')
-            input_string = input('input_string:')
+            key = raw_input('key:')
+            input_string = raw_input('input_string:')
             obj = VG()
             obj.create_table(key)
             print('key')
