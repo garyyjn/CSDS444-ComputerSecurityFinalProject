@@ -354,9 +354,8 @@ class des():
         return result
 
 
-    def setKey(self,path):
-        f = open(path,'r')
-        keyfile = f.read()
+    def setKey(self,key):
+        keyfile = key
         if(len(keyfile))==8:
             ans = []
             byteKey = ""
@@ -374,19 +373,8 @@ class des():
             else:
                 self.key[0] = byteKey
 
-    def setFile(self,filename):
-        if filename != '':
-            tempPath = filename.split(".")
-            if len(self.file)==0:
-                self.file.append(tempPath[1])
-            if len(self.file)!=0:
-                self.file[0]= tempPath[1]
-            if len(self.path)==0:
-                self.path.append(tempPath[0])
-            if len(self.path)!=0:
-                self.path[0]=tempPath[0]
-            f = open(filename,'r',errors='ignore')
-            temp = f.read()
+    def setFile(self,file):
+            temp = file
             if len(self.tempFile)==0:
                 self.tempFile.append(temp)
             if len(self.tempFile)!=0:
@@ -397,38 +385,22 @@ class des():
             if type == 0:
                 message = self.toBin(self.tempFile[0])
                 result = self.processBinMessage(message, self.key[0], 0)
-                temp = self.path[0]
-                temp = temp + "(" + self.file[0] + ").des"
-                with open(temp, 'w') as f:
-                    f.write(result)
+                return result
             else:
                 message = self.processBinMessage(self.tempFile[0], self.key[0], 1)
                 result = self.toChar(message)
-                temp = self.path[0]
-                temp1 = temp.split("(")
-                temp2 = temp1[len(temp1) - 1]
-                temp2 = temp2.split(")")
-                temp2 = temp2[0]
-                temp1 = temp1[0:len(temp1) - 1]
-                tempName = ""
-                for element in temp1:
-                    tempName = tempName+element
-                name = tempName + "." + temp2
-                with open(name, 'w') as f:
-                    f.write(result)
+                return result
 
 
-    def encryption(self,keyPath,filename):
-        self.setKey(keyPath)
-        self.setFile(filename)
-        self.process(0)    
+    def encryption(self,key,file):
+        self.setKey(key)
+        self.setFile(file)
+        result = self.process(0)
+        return result    
 
-    def decryption(self,keyPath,filename):
-        self.setKey(keyPath)
-        self.setFile(filename)
-        self.process(1)
+    def decryption(self,key,file):
+        self.setKey(key)
+        self.setFile(file)
+        result = self.process(1)
+        return result
 
-if __name__ == '__main__':
-    desObj = des()
-    desObj.encryption("key.txt","file.txt") # this will generte file(des).txt at the same directory
-    desObj.decryption("key.txt","file(txt).des") #thie will generate file.txt at the same directory
